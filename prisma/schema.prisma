@@ -3,20 +3,19 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 
 model users {
   id                 Int                 @id @default(autoincrement())
   name               String
   email              String              @unique
-  password_hash      String?             @db.LongText
+  password_hash       String?             @db.Text
   role               UserType            @default(ADMIN)
   status             Status              @default(ACTIVE)
-  created_at         DateTime            @default(now())
-  updated_at         DateTime            @updatedAt
+  created_at          DateTime            @default(now())
+  updated_at          DateTime            @updatedAt
   reviews            reviews[]
 
   @@index([status])
@@ -25,25 +24,25 @@ model users {
 model technologies {
   id                 Int                 @id @default(autoincrement())
   code               String              @unique
-  name               String          
-  description        String?            @db.LongText
-  image_key          String              @db.LongText
+  name               String
+  description        String?             @db.Text
+  image_key           String              @db.Text
   status             Status              @default(ACTIVE)
-  created_at         DateTime            @default(now())
-  updated_at         DateTime            @updatedAt
+  created_at          DateTime            @default(now())
+  updated_at          DateTime            @updatedAt
 
   @@index([status])
 }
 
 model reviews {
   id                 Int                 @id @default(autoincrement())
-  title              String              @db.LongText
-  description        String?            @db.LongText
-  user               users              @relation(fields: [user_id], references: [id])
-  user_id            Int      
+  title              String              @db.Text
+  description        String?             @db.Text
+  user               users                @relation(fields: [user_id], references: [id])
+  user_id             Int
   status             Status              @default(ACTIVE)
-  created_at         DateTime            @default(now())
-  updated_at         DateTime            @updatedAt
+  created_at          DateTime            @default(now())
+  updated_at          DateTime            @updatedAt
 
   @@index([status])
 }
