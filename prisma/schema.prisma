@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model users {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  email              String              @unique
+  password_hash      String?             @db.LongText
+  role               UserType            @default(ADMIN)
+  status             Status              @default(ACTIVE)
+  created_at         DateTime            @default(now())
+  updated_at         DateTime            @updatedAt
+  reviews            reviews[]
+
+  @@index([status])
+}
+
+model technologies {
+  id                 Int                 @id @default(autoincrement())
+  code               String              @unique
+  name               String          
+  description        String?            @db.LongText
+  image_key          String              @db.LongText
+  status             Status              @default(ACTIVE)
+  created_at         DateTime            @default(now())
+  updated_at         DateTime            @updatedAt
+
+  @@index([status])
+}
+
+model reviews {
+  id                 Int                 @id @default(autoincrement())
+  title              String              @db.LongText
+  description        String?            @db.LongText
+  user               users              @relation(fields: [user_id], references: [id])
+  user_id            Int      
+  status             Status              @default(ACTIVE)
+  created_at         DateTime            @default(now())
+  updated_at         DateTime            @updatedAt
+
+  @@index([status])
+}
+
+enum UserType {
+  USER
+  ADMIN
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+  DELETED
+}
