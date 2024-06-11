@@ -8,7 +8,7 @@ export class PrismaService extends PrismaClient {
     super({
       datasources: {
         db: {
-          url: config.get("DATABASE_URL"),
+          url: "postgres://tech_dev_user:PgVXnN9i2SV1rlUT5wQV2o94Z9pnsb05@dpg-cpjtfon109ks73es2d50-a.oregon-postgres.render.com/tech_dev",
         },
       },
     });
